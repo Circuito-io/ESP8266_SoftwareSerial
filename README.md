@@ -25,7 +25,7 @@ See example usage in [Firmware.ino](Firmware/Firmware.ino)
       To: `#define _SS_MAX_RX_BUFF 256 // RX buffer size`
       this will enlarge the software serial buffer.
    -  Sometimes setting the baudrate on initialization fails, try resetting the Arduino, it should work fine.
-   -  On some cases it might be necessary to flash the ESP's firmware. See [Flashing the ESP](#Flashing-the-ESP)
+   -  On some cases it might be necessary to flash the ESP's firmware. See [Flashing the ESP](#flashing-the-esp)
 
 
 # Flashing the ESP
