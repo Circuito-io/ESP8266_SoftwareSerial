@@ -1,12 +1,15 @@
 /*  Robo-Plan Technologies LTD: 08/2016
 
-   This Arduino Sketch purpose it to check the ESP8266-01 as a peripheral wifi board connected to
+   The purpose of this Arduino Sketch is to check the ESP8266-01 as a peripheral wifi board connected to
    an Arduino Uno board via a 5-3.3 logic converter with SoftwareSerial using ESP8266 AT command library created by ITEAD.
+   
    The original library can be found: https://github.com/itead/ITEADLIB_Arduino_WeeESP8266
 
-   Our goal is to manage to create a working Esp8266 AT command library working successfully on software serial based on ITEAD library.
-   Therefore, we are distributing this preliminary library. We ask for users to connect the Esp8266-01 and run this example.
-   Please write to us about any bugs, comments, issues, improvment proposals, etc.
+   Our goal was to create an Esp8266 AT command library (based on ITEAD library), 
+   that would work well on software serial on most ESP8266 devices, no matter the firmware, or the initial baudrate.
+   
+   Therefore, we are distributing this preliminary library. Please connect the Esp8266-01 and run this example.
+   Write to us about any bugs, comments, issues, improvement proposals, etc.
 
    We have modified the original library due to Software serial baudrate problems.
    Now, the initialize function, when using software serial only, will set the ESP8266 baudrate to 9600.
