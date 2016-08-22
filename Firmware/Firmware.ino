@@ -23,11 +23,7 @@
    -  Enter your SSID and PASSWORD below.
    -  go to https://dweet.io/see - choose one of the dweets and copy its name to 'thingName' variable declared below.(or create your own dweet)
    -  If using SoftwareSerial make sure the line "#define ESP8266_USE_SOFTWARE_SERIAL" in ESP8266.h is uncommented.
-   -  In the folder provided you can find:
-      - output example image of the serial monitor.
-      - Fritzing wiring diagram to Arduino Uno
-      - Fritzing wiring diagram to FTDI.
-      - Flasher and .bin files for firmware update.
+
 
  Troubleshooting:
    -  If you receive partial response from the esp8266 when using software serial - 
