@@ -21,7 +21,6 @@
    -  In order to run the example, first connect the ESP8266 via Software Serial to your arduino board using a logic converter,
         as shown in the wiring figure attached.
    -  Enter your SSID and PASSWORD below.
-   -  go to https://dweet.io/see - choose one of the dweets and copy its name to 'thingName' variable declared below.(or create your own dweet)
    -  If using SoftwareSerial make sure the line "#define ESP8266_USE_SOFTWARE_SERIAL" in ESP8266.h is uncommented.
 
 
