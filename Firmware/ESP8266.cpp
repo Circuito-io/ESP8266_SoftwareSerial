@@ -129,37 +129,37 @@ bool ESP8266::init(const String &ssid, const String &pwd, uint32_t baudRateSet)
   }
 
   //Setting operation mode to Station + SoftAP
-  if (wifi.setOprToStationSoftAP()) 
+  if (setOprToStationSoftAP())
   {
     Serial.println("Station + softAP - OK");
   }
-  else 
+  else
   {
     Serial.println("Station + softAP - Error, Reset Board!");
     return false;
   }
 
-  if (wifi.joinAP(ssid, pwd)) 
+  if (joinAP(ssid, pwd))
   {
     Serial.print("Joining AP successful, ");
-    Serial.println( wifi.getLocalIP().c_str());
-  } 
-  else 
+    Serial.println(getLocalIP().c_str());
+  }
+  else
   {
     Serial.println("Join AP failure, Reset Board!");
     return false;
   }
 
-  if (wifi.disableMUX()) 
+  if (disableMUX())
   {
     Serial.println("Single Mode OK");
-  } 
-  else 
+  }
+  else
   {
     Serial.println("Single Mode Error, Reset Board!");
     return false;
   }
-  
+  return true;
 }
 
 
@@ -900,15 +900,16 @@ bool ESP8266::sATCIPSTO(uint32_t timeout)
 
 
 
-bool ESP8266::sendSingle(String &url)
+bool ESP8266::sendSingle(const char* url)
 {
   rx_empty();
   m_puart->print("AT+CIPSEND=");
-  m_puart->println(url.length());
+  m_puart->println(strlen(url));
   if (recvFind(">", 500)) {
     rx_empty();
-    m_puart->println(url);
-  
+    m_puart->print(url);
+
+
     return recvFind("SEND OK", 500);
   }
   else
@@ -916,66 +917,61 @@ bool ESP8266::sendSingle(String &url)
 }
 
 
-String ESP8266::recvSingle()
+int ESP8266::recvSingle(uint8_t *buffer, int bufferLen)
 {
-  String inData = "";
+  int i = 0;
+  int bodyFlag = 1;
+#ifndef ESP8266_USE_SOFTWARE_SERIAL
+String inData = "";
+#endif
+
   unsigned long start = millis();
   while (millis() - start < 500) {
-    if (m_puart->available() > 0 ) {
-      //when using software serial due to buffer issues read incomming string char by char
+    while (m_puart->available() > 0 && i < bufferLen)
+    {
+      //when using software serial due to buffer issues read incoming string char by char
 #ifdef ESP8266_USE_SOFTWARE_SERIAL
-      char a = m_puart->read();
-      inData += a;
+      char c = m_puart->read();
+      buffer[i++] = c;
 #else
       inData += m_puart->readStringUntil('\n');
+
 #endif
     }
+
+    if (i == bufferLen && m_puart->available()) {
+      Serial.println(F("buffer is full!"));
+      return i - 1;
+    }
   }
-  return inData;
+
+  return i - 1;
 }
-
-String ESP8266::httpGet(const String &url)
+int ESP8266::httpGet()
 {
-  int hostStart = url.indexOf("//")
-  
-  if (hostStart == -1)
-  {
-    return "";
-  }
-  
-  int fileStart = url.indexOf("/", hostStart + 2);
-  
-  if (fileStart == -1)
-  {
-    return "";
-  }
-  
-  String host = url.substring(hostStart+2, fileStart);
-  String file = url.substring(fileStart+1, url.length());
+  char* request =  "GET / HTTP/1.1\r\nHost: www.google.com\r\nConnection: close\r\n\r\n";
 
-  String request =  "GET " + file + "\r\nHTTP/1.1\r\nHost: " + host + "\r\nUser-Agent: ESP8266-WiFi/1.0\r\nConnection: close\r\n\r\n";
-  
-  createTCP(host, 80)) 
+  if (createTCP("www.google.com", 80))
   {
-    Serial.println("create tcp - OK");
+    Serial.println(F("create tcp - OK"));
   }
-  else 
+  else
   {
-    Serial.println("create tcp - ERROR");
+    Serial.println(F("create tcp - ERROR"));
     return "";
   }
-  
-  if (!sendSingle(outputURL))    
-  {
-    return "";
-  }
-  
-  String urlResponse = recvSingle();
-  String body;
-  
-  // TODO! parse http response, extract code, verify code, and if Ok return body
 
-  return body;
+  if (!sendSingle(request))
+  {
+    Serial.print(F("not sent"));
+    //return "";
+  }
+
+  int len = recvSingle(m_responseBuffer, MAX_BUFFER_SIZE);
+  Serial.println((char*)m_responseBuffer);
+
+
+  return len;
 }
 
 

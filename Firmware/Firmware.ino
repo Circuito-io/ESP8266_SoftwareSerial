@@ -15,7 +15,7 @@
    Now, the initialize function, when using software serial only, will set the ESP8266 baudrate to 9600.
    
    The sketch sets the ESP8266 baudrate to 9600 by default for software serial and to 115200 with hardware serial. 
-   Then it connects to your AP, checks the version of the ESP8266, sends a TCP request to dweet.io and displays the response on the serial monitor.
+   Then it connects to your AP, checks the version of the ESP8266, sends a TCP request to google.com and displays the response on the serial monitor.
 
    Notes:
    -  In order to run the example, first connect the ESP8266 via Software Serial to your arduino board using a logic converter,
@@ -33,11 +33,10 @@
    -  Sometime setting the baudrate on initialization fails, try resetting the Arduino, it should work fine.
    
 */
-#include "Global.h"
 #include "ESP8266.h"
 
 const char *SSID     = "WIFI-SSID";
-const char *PASSWORD = "WIFI-PASSWORD";
+const char *PASSWORD = "WIFI-PASWWORD";
 
 SoftwareSerial mySerial(10, 11); //SoftwareSerial pins for MEGA/Uno. For other boards see: https://www.arduino.cc/en/Reference/SoftwareSerial
 
@@ -58,8 +57,9 @@ void setup(void)
 
 
 void loop(void)
-{
-    Serial.println(wifi.httpGet("http://www.google.com"));
+{   
+    Serial.println("Sending Request to www.google.com");
+    wifi.httpGet();
 
     delay(4000);
 }

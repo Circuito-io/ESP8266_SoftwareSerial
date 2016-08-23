@@ -22,6 +22,7 @@
 #define __ESP8266_H__
 
 #include "Arduino.h"
+#define MAX_BUFFER_SIZE  300
 
 
 #define ESP8266_USE_SOFTWARE_SERIAL
@@ -401,10 +402,10 @@ class ESP8266 {
     uint32_t recv(uint8_t *coming_mux_id, uint8_t *buffer, uint32_t buffer_size, uint32_t timeout = 1000);
 
 
-    String recvSingle();
-    bool sendSingle(String &url);
+    int recvSingle(uint8_t *buffer, int bufferLen);
+    bool sendSingle(const char* url);
 
-    String httpGet(const String &url);
+    int httpGet();
 
     
  private:
@@ -472,7 +473,10 @@ class ESP8266 {
     bool sATCIPMUX(uint8_t mode);
     bool sATCIPSERVER(uint8_t mode, uint32_t port = 333);
     bool sATCIPSTO(uint32_t timeout);
-    
+
+
+      uint8_t m_responseBuffer[MAX_BUFFER_SIZE] = {0};
+
     /*
      * +IPD,len:data
      * +IPD,id,len:data
