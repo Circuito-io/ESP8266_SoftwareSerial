@@ -1,6 +1,6 @@
 # ESP8266_SoftwareSerial
 
-Based on [ITEAD's library](https://github.com/itead/ITEADLIB_Arduino_WeeESP8266) this library improves communication when using SoftwareSerial to comminucate between the Arduino and the ESP8266.
+Based on [ITEAD's library](https://github.com/itead/ITEADLIB_Arduino_WeeESP8266) this library improves communication when using SoftwareSerial to communicate between the Arduino and the ESP8266.
 
 # Intro
 We have modified the original library due to Software serial baudrate problems.
@@ -16,7 +16,7 @@ Now, the init function, when using software serial only, will set the ESP8266 ba
 ![Wiring ESP8266 to Arduino Uno](Docs/Wiring.PNG)
 
 # Usage
-See example usage in [Firmware.ino](Firmware/Firmware.ino)
+See example usage in [Firmware.ino](examples/Firmware/Firmware.ino)
 
 # Troubleshooting
    -  If you receive partial response from the esp8266 when using software serial - 
